@@ -1,4 +1,4 @@
-const start = {x: 1, y: 1}
+const start = {x: 8, y: 1}
 
 interface Coords { 
   x: number; 
@@ -14,7 +14,7 @@ const wayOut = (maze: Maze, start: Coords) => {
   const xLineLengh = maze[0].length - 1;
   const yLineLengh = maze.length - 1;
   
-  if (!maze[start.y][start.x]) {
+  if (!maze[start.y] || !maze[start.y][start.x]) {
     alert(`This cell isn't walkable`);
     return null;
   }

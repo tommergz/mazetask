@@ -6,7 +6,7 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             r[k] = a[j];
     return r;
 };
-var start = { x: 1, y: 1 };
+var start = { x: 8, y: 1 };
 var wayOut = function (maze, start) {
     var allWay = [];
     var passedPoitns = [];
@@ -14,7 +14,7 @@ var wayOut = function (maze, start) {
     var exit = false;
     var xLineLengh = maze[0].length - 1;
     var yLineLengh = maze.length - 1;
-    if (!maze[start.y][start.x]) {
+    if (!maze[start.y] || !maze[start.y][start.x]) {
         alert("This cell isn't walkable");
         return null;
     }
