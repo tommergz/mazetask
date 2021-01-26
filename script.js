@@ -6,14 +6,18 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             r[k] = a[j];
     return r;
 };
-var start = { x: 8, y: 1 };
+var start = { x: 1, y: 1 };
 var wayOut = function (maze, start) {
-    var allWay = [{ x: -2, y: -2 }];
-    var passedPoitns = [{ x: -2, y: -2 }];
+    var allWay = [];
+    var passedPoitns = [];
     var finish = start;
     var exit = false;
     var xLineLengh = maze[0].length - 1;
     var yLineLengh = maze.length - 1;
+    if (!maze[start.y][start.x]) {
+        alert("This cell isn't walkable");
+        return null;
+    }
     var exits = [];
     for (var i = 0; i <= xLineLengh; i++) {
         if (maze[0][i]) {
@@ -36,9 +40,9 @@ var wayOut = function (maze, start) {
         }
     }
     exits = exits.filter(function (obj) { return obj.x !== finish.x || obj.y !== finish.y; });
-    if (!maze[start.y][start.x]) {
-        alert("this cell isn't walkable");
-        return false;
+    if (!exits.length) {
+        alert('There is no way out');
+        return null;
     }
     var nextCellTest = function (x, y, way) {
         if (exit)
@@ -59,7 +63,7 @@ var wayOut = function (maze, start) {
         if (way.length > 1) {
             if (x === finish.x && y === finish.y) {
                 way.push(point);
-                if (allWay.length === 1) {
+                if (allWay.length === 0) {
                     allWay = way;
                 }
                 else {
@@ -92,18 +96,17 @@ var wayOut = function (maze, start) {
     };
     for (var i = 0; i < exits.length; i++) {
         var start_1 = exits[i];
-        mole(start_1, [{ x: -2, y: -2 }], [0, -1, 1, 0, 0, 1, -1, 0]);
-        passedPoitns = [{ x: -2, y: -2 }];
+        mole(start_1, [], [0, -1, 1, 0, 0, 1, -1, 0]);
+        passedPoitns = [];
         exit = false;
-        mole(start_1, [{ x: -2, y: -2 }], [1, 0, 0, 1, -1, 0, 0, -1]);
-        passedPoitns = [{ x: -2, y: -2 }];
+        mole(start_1, [], [1, 0, 0, 1, -1, 0, 0, -1]);
+        passedPoitns = [];
         exit = false;
-        mole(start_1, [{ x: -2, y: -2 }], [0, 1, -1, 0, 0, -1, 1, 0]);
-        passedPoitns = [{ x: -2, y: -2 }];
+        mole(start_1, [], [0, 1, -1, 0, 0, -1, 1, 0]);
+        passedPoitns = [];
         exit = false;
-        mole(start_1, [{ x: -2, y: -2 }], [-1, 0, 0, -1, 1, 0, 0, 1]);
+        mole(start_1, [], [-1, 0, 0, -1, 1, 0, 0, 1]);
     }
-    allWay.splice(0, 1);
     return exit ? allWay.reverse() : 'There is no way out';
 };
 var X = false; // wall 

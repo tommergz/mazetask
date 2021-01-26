@@ -1,4 +1,4 @@
-const start = {x: 8, y: 1}
+const start = {x: 1, y: 1}
 
 interface Coords { 
   x: number; 
@@ -7,12 +7,17 @@ interface Coords {
 type Maze = boolean[][]; 
 
 const wayOut = (maze: Maze, start: Coords) => {
-  let allWay: [{x: number, y: number}] = [{x: -2, y: -2}];           
-  let passedPoitns: [{x: number, y: number}] = [{x: -2, y: -2}]; 
+  let allWay: any = [];           
+  let passedPoitns: any = []; 
   const finish = start;   
   let exit = false;
   const xLineLengh = maze[0].length - 1;
   const yLineLengh = maze.length - 1;
+  
+  if (!maze[start.y][start.x]) {
+    alert(`This cell isn't walkable`);
+    return null;
+  }
 
   let exits = [];
   for (let i = 0; i <= xLineLengh; i++) {
@@ -37,11 +42,12 @@ const wayOut = (maze: Maze, start: Coords) => {
   }
   exits = exits.filter(obj => obj.x !== finish.x || obj.y !== finish.y);
 
-  if (!maze[start.y][start.x]) {
-    alert(`this cell isn't walkable`);
-    return false;
+  if (!exits.length) {
+    alert('There is no way out')
+    return null
   }
-  const nextCellTest = (x: number, y: number, way: [{x: number, y: number}]) => {
+
+  const nextCellTest = (x: number, y: number, way: any []) => {
     if (exit) return false;
     if (way.length > 1) {
       for (let i = 0; i < passedPoitns.length; i++) {
@@ -52,13 +58,13 @@ const wayOut = (maze: Maze, start: Coords) => {
     return maze[y][x];
   }
 
-  const mole = (point: {x: number, y: number}, way: [{x: number, y: number}], directions: [number, number, number, number, number, number, number, number]) => {
+  const mole = (point: {x: number, y: number}, way: any [], directions: [number, number, number, number, number, number, number, number]) => {
     const x = point.x;
     const y = point.y;
     if (way.length > 1) {
       if (x === finish.x && y === finish.y) {
         way.push(point);
-          if (allWay.length === 1) {
+          if (allWay.length === 0) {
             allWay = way;
           } else {
             allWay = allWay > way ? way : allWay
@@ -89,18 +95,17 @@ const wayOut = (maze: Maze, start: Coords) => {
   }
   for (let i = 0; i < exits.length; i++) {
     let start = exits[i];
-    mole(start, [{x: -2, y: -2}], [0, -1, 1, 0, 0, 1, -1, 0]);
-    passedPoitns = [{x: -2, y: -2}];
+    mole(start, [], [0, -1, 1, 0, 0, 1, -1, 0]);
+    passedPoitns = [];
     exit = false;
-    mole(start, [{x: -2, y: -2}], [1, 0, 0, 1, -1, 0, 0, -1]);
-    passedPoitns = [{x: -2, y: -2}];
+    mole(start, [], [1, 0, 0, 1, -1, 0, 0, -1]);
+    passedPoitns = [];
     exit = false;
-    mole(start, [{x: -2, y: -2}], [0, 1, -1, 0, 0, -1, 1, 0]);
-    passedPoitns = [{x: -2, y: -2}];
+    mole(start, [], [0, 1, -1, 0, 0, -1, 1, 0]);
+    passedPoitns = [];
     exit = false;
-    mole(start, [{x: -2, y: -2}], [-1, 0, 0, -1, 1, 0, 0, 1]);
+    mole(start, [], [-1, 0, 0, -1, 1, 0, 0, 1]);
   }  
-    allWay.splice(0, 1);
   return exit ? allWay.reverse() : 'There is no way out';
 }
 
